@@ -47,13 +47,14 @@ class RedirectToDjango(RedirectView):
     
 
 class Postlist(ListView):
-    #model = Post
+    model = Post
     #queryset = Post.objects.all()
-
+    paginate_by = 2
     context_object_name = 'posts'
+    ordering = 'id'
 
-    def get_queryset(self):
-        posts = Post.objects.filter(status=True) 
-        return posts
+    #def get_queryset(self):
+       # posts = Post.objects.filter(status=True) 
+        #return posts
 
 
