@@ -6,8 +6,12 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>index</h1>
-   <P>{{name}}</P>
-   <p>{{posts}}</p>
+    <h1>Blog Post</h1>
+    {% for post in posts %}
+    <div>
+        <h2>{{post.title}}</h2>
+        <p>{{post.content}}</p>
+    </div>
+    {% endfor %}
 </body>
 </html>
