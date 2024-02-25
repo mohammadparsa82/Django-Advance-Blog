@@ -23,6 +23,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/',include('blog.urls')),
+    path('accounts/',include('django.contrib.auth.urls')),
 ]
 
 #serving static and media fo development
