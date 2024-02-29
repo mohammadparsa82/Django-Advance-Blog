@@ -9,9 +9,9 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView ,DetailView,FormView,CreateView,UpdateView,DeleteView
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin ,PermissionRequiredMixin
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 # Create your views here.
-
-
 # Function Base view show a templates
 '''
 def indexView(request):
@@ -22,7 +22,6 @@ def indexView(request):
     context = {"name":name}
     return render(request,"index.html",context)
 '''
-
 
 class IndexView(TemplateView):
     """
@@ -65,8 +64,6 @@ class Postlist(PermissionRequiredMixin,LoginRequiredMixin,ListView):
 class PostDetailView(LoginRequiredMixin,DetailView):
     model = Post
 
-
-
 """
 class PostCreateView(FormView):
     template_name = "contact.html"
@@ -78,7 +75,7 @@ class PostCreateView(FormView):
         return super().form_valid(form)
 """
 class PostCreateView(PermissionRequiredMixin,LoginRequiredMixin,CreateView):
-    permission_required = 'blog.view_post'
+    permission_required = 'blog.view_post' 
     model = Post
   #  fields = ['author','title','content','status','category','published_date']
     form_class = PostForm
@@ -93,9 +90,11 @@ class PostEditView(LoginRequiredMixin,UpdateView):
     form_class = PostForm
     success_url = "/blog/post/"
 
-  
 
 class PostDeleteView(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = "/blog/post/"
 
+@api_view()
+def ApiPost(request):
+    return Response({"name": "mmd"})
