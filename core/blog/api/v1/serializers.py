@@ -1,0 +1,7 @@
+from rest_framework import serializers
+
+class PostSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    title = serializers.CharField(max_length=255)
+    content = serializers.CharField(max_length=255)
+    created_date = serializers.DateTimeField()

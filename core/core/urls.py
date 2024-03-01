@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/',include('django.contrib.auth.urls')),
 ]
 
+
 #serving static and media fo development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
