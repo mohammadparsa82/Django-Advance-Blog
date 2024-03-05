@@ -7,7 +7,7 @@ from rest_framework import status , generics ,mixins
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView , ListAPIView ,CreateAPIView
+from rest_framework.generics import GenericAPIView , ListAPIView ,CreateAPIView , RetrieveUpdateDestroyAPIView
 
 
 
@@ -74,6 +74,7 @@ def PostDetail(request,id):
         return Response({"detail":"item removed successful"},status=status.HTTP_204_NO_CONTENT)
 """
 
+"""
 class PostDetail(APIView):
     # getting detail of the post and edit plus removing it
     permission_classes=[IsAuthenticatedOrReadOnly]
@@ -98,3 +99,11 @@ class PostDetail(APIView):
         post = get_object_or_404(Post,pk=id,status=True)
         post.delete()
         return Response({"detail":"item removed successful"},status=status.HTTP_204_NO_CONTENT)
+"""
+
+class PostDetail(RetrieveUpdateDestroyAPIView):
+     # getting detail of the post and edit plus removing it
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+    lookup_field = 'id'
