@@ -3,11 +3,12 @@ from rest_framework.response import Response
 from .serializers  import PostSerializer
 from blog.models import Post
 from django.shortcuts import get_object_or_404
-from rest_framework import status , generics ,mixins
+from rest_framework import status , generics ,mixins , viewsets
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView , ListAPIView ,CreateAPIView , RetrieveUpdateDestroyAPIView
+
 
 
 
@@ -107,3 +108,30 @@ class PostDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     lookup_field = 'id'
+    
+# Example for  ViewSet in CBV
+class PostViewsSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+    queryset = Post.objects.filter(status=True)
+
+    def list(self,request):
+        serializer = self.serializer_class(self.queryset,many=True)
+        return Response(serializer.data)
+    
+    def retrieve(self,request,pk=None):
+        post_objects = get_object_or_404(self.queryset,pk=pk)
+        serializer = self.serializer_class(post_objects)
+        return Response(serializer.data)
+    
+    def create(self, request):
+        pass
+    
+    def update(self, request, pk=None):
+        pass
+
+    def partial_update(self, request, pk=None):
+        pass
+
+    def destroy(self, request, pk=None):
+        pass
