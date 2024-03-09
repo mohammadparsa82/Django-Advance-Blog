@@ -36,8 +36,14 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_absolute_url(self,obj):
         request = self.context.get('request')
-        return request.build_absolute_uri(obj.title)
+        return request.build_absolute_uri(obj.id)
 
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['category'] = CategorySerializer(instance.category).data
+        rep.pop('snippet',None)
+        return rep
+    
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
