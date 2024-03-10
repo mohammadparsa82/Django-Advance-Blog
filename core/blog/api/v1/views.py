@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView , ListAPIView ,CreateAPIView , RetrieveUpdateDestroyAPIView
 from .permissions import IsOwnerReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.filters import SearchFilter  
 
 
 """
@@ -48,14 +48,13 @@ class PostList(APIView):
         return Response(serializer.data)
 
 """
+"""
 class PostList(ListAPIView,CreateAPIView):
     # getting a list of posts and creating new posts
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-
-
-
+"""
 
 """"
 @api_view(["GET","PUT","DELETE"])
@@ -101,21 +100,23 @@ class PostDetail(APIView):
         post.delete()
         return Response({"detail":"item removed successful"},status=status.HTTP_204_NO_CONTENT)
 """
-
+"""
 class PostDetail(RetrieveUpdateDestroyAPIView):
      # getting detail of the post and edit plus removing it
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     lookup_field = 'id'
+"""
     
 # Example for  ModelViewSet in CBV
 class PostModelViewsSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend,SearchFilter]
     filterset_fields = ['category','author']
+    search_fields = ['title','content'] 
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
