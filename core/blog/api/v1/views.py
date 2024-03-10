@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView , ListAPIView ,CreateAPIView , RetrieveUpdateDestroyAPIView
 from .permissions import IsOwnerReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter  
+from rest_framework.filters import SearchFilter  , OrderingFilter
 
 
 """
@@ -114,9 +114,10 @@ class PostModelViewsSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends = [DjangoFilterBackend,SearchFilter]
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     filterset_fields = ['category','author']
     search_fields = ['title','content'] 
+    ordering_fields = ['published_data']
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
