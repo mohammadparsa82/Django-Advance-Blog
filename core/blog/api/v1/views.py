@@ -11,7 +11,7 @@ from rest_framework.generics import GenericAPIView , ListAPIView ,CreateAPIView 
 from .permissions import IsOwnerReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter  , OrderingFilter
-
+from .pagination import *
 
 """
 @api_view(["GET","POST"])
@@ -118,7 +118,9 @@ class PostModelViewsSet(viewsets.ModelViewSet):
     filterset_fields = ['category','author']
     search_fields = ['title','content'] 
     ordering_fields = ['published_data']
+    pagination_class = LargeResultsSetPagination
 
+    
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
