@@ -3,8 +3,8 @@ from rest_framework import generics , status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-
-
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 class RegistrationApiView(generics.GenericAPIView):
     serializer_class = RegistrationSerializer
@@ -19,7 +19,7 @@ class RegistrationApiView(generics.GenericAPIView):
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+
 class CustomObtainAuthToken(ObtainAuthToken):
     serializer_class = CustomObtainAuthTokenSerializer
     def post(self, request, *args, **kwargs):
@@ -33,3 +33,10 @@ class CustomObtainAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
+    
+class CustomDiscardAuthToken(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

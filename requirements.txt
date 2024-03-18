@@ -3,7 +3,7 @@ django >3.2,<3.3
 python-decouple 3.8
 pillow
 djangorestframework
-
+coreapi
 # third party models
 markdown
 django-filter
